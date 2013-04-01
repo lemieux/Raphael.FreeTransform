@@ -249,6 +249,7 @@ Raphael.fn.freeTransform = function (subject, options, callback) {
     });
 
     // bind scale
+
     ft.handles.scale.element.drag(function (dx, dy) {
       // viewBox might be scaled
       if (ft.o.viewBoxRatio) {
@@ -404,6 +405,12 @@ Raphael.fn.freeTransform = function (subject, options, callback) {
       asyncCallback([ 'drag end'   ]);
     });
 
+    ft.handles.remove.element.click(function(){
+      subject.freeTransform.unplug();
+      subject.remove();
+
+    });
+
     ft.updateHandles();
 
     return ft;
@@ -439,8 +446,8 @@ Raphael.fn.freeTransform = function (subject, options, callback) {
 
       ft.bbox = null;
 
-      ft.handles.map(function (handle) {
-        handle.element.remove();
+      $.each(ft.handles, function () {
+        this.element.remove();
       });
 
       ft.handles = null;
