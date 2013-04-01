@@ -39,8 +39,7 @@ Raphael.fn.freeTransform = function (subject, options, callback) {
 
   var
     paper = this,
-    bbox = subject.getBBox(true)
-    ;
+    bbox = subject.getBBox(true);
 
   var ft = subject.freeTransform = {
     // Keep track of transformations
@@ -57,8 +56,29 @@ Raphael.fn.freeTransform = function (subject, options, callback) {
     axes    : null,
     bbox    : null,
     callback: null,
+    icons: {
+      move: {
+        url: '/js/externals/raphael.freetransform/move.png',
+        width: 24,
+        height: 24
+      },
+      rotate: {
+        url: '/js/externals/raphael.freetransform/rotate.png',
+        width: 24,
+        height: 24
+      },
+      scale: {
+        url: '/js/externals/raphael.freetransform/scale.png',
+        width: 24,
+        height: 24
+      },
+      remove: {
+        url: '/js/externals/raphael.freetransform/remove.png',
+        width: 24,
+        height: 24
+      }
+    },
     items   : [],
-    handles : { center: null, x: null, y: null },
     offset  : {
       rotate   : 0,
       scale    : { x: 1, y: 1 },
@@ -75,7 +95,7 @@ Raphael.fn.freeTransform = function (subject, options, callback) {
       range    : { rotate: [ -180, 180 ], scale: [ -99999, 99999 ] },
       rotate   : true,
       scale    : true,
-      size     : 5
+      size     : 12
     },
     subject : subject
   };
@@ -163,24 +183,16 @@ Raphael.fn.freeTransform = function (subject, options, callback) {
 
     ft.handles = {
       move  : {
-        element: paper
-          .rect(ft.attrs.center.x, ft.attrs.center.y, ft.opts.size.bboxCorners * 2, ft.opts.size.bboxCorners * 2)
-          .attr($.extend(ft.opts.attrs, {fill: 'green'}))
+        element: paper.image(ft.icons.move.url, ft.attrs.center.x, ft.attrs.center.y, ft.icons.move.width, ft.icons.move.height).attr({cursor: 'move'})
       },
       rotate: {
-        element: paper
-          .rect(ft.attrs.center.x, ft.attrs.center.y, ft.opts.size.bboxCorners * 2, ft.opts.size.bboxCorners * 2)
-          .attr($.extend(ft.opts.attrs, {fill: 'yellow'}))
+        element: paper.image(ft.icons.rotate.url, ft.attrs.center.x, ft.attrs.center.y, ft.icons.rotate.width, ft.icons.rotate.height).attr({cursor: 'move'})
       },
       scale : {
-        element: paper
-          .rect(ft.attrs.center.x, ft.attrs.center.y, ft.opts.size.bboxCorners * 2, ft.opts.size.bboxCorners * 2)
-          .attr($.extend(ft.opts.attrs, {fill: 'red'}))
+        element: paper.image(ft.icons.scale.url, ft.attrs.center.x, ft.attrs.center.y, ft.icons.scale.width, ft.icons.scale.height).attr({cursor: 'move'})
       },
       remove: {
-        element: paper
-          .rect(ft.attrs.center.x, ft.attrs.center.y, ft.opts.size.bboxCorners * 2, ft.opts.size.bboxCorners * 2)
-          .attr($.extend(ft.opts.attrs, {fill: 'blue'}))
+        element: paper.image(ft.icons.remove.url, ft.attrs.center.x, ft.attrs.center.y, ft.icons.remove.width, ft.icons.remove.height).attr({cursor: 'pointer'})
       }
     };
 
@@ -405,6 +417,7 @@ Raphael.fn.freeTransform = function (subject, options, callback) {
       asyncCallback([ 'drag end'   ]);
     });
 
+    // bind delete
     ft.handles.remove.element.click(function(){
       subject.freeTransform.unplug();
       subject.remove();
@@ -433,12 +446,6 @@ Raphael.fn.freeTransform = function (subject, options, callback) {
       ft.items.map(function (item) {
         item.el.undrag();
       });
-    }
-
-    if (ft.handles.center) {
-      ft.handles.center.disc.remove();
-
-      ft.handles.center = null;
     }
 
     if (ft.bbox) {
