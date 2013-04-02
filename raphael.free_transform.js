@@ -56,28 +56,6 @@ Raphael.fn.freeTransform = function (subject, options, callback) {
     axes    : null,
     bbox    : null,
     callback: null,
-    icons: {
-      move: {
-        url: '/js/externals/raphael.freetransform/move.png',
-        width: 24,
-        height: 24
-      },
-      rotate: {
-        url: '/js/externals/raphael.freetransform/rotate.png',
-        width: 24,
-        height: 24
-      },
-      scale: {
-        url: '/js/externals/raphael.freetransform/scale.png',
-        width: 24,
-        height: 24
-      },
-      remove: {
-        url: '/js/externals/raphael.freetransform/remove.png',
-        width: 24,
-        height: 24
-      }
-    },
     items   : [],
     offset  : {
       rotate   : 0,
@@ -95,7 +73,23 @@ Raphael.fn.freeTransform = function (subject, options, callback) {
       range    : { rotate: [ -180, 180 ], scale: [ -99999, 99999 ] },
       rotate   : true,
       scale    : true,
-      size     : 12
+      size     : 12,
+      icons: {
+        width: 24,
+        height: 24,
+        move: {
+          url: '/js/externals/raphael.freetransform/move.png'
+        },
+        rotate: {
+          url: '/js/externals/raphael.freetransform/rotate.png'
+        },
+        scale: {
+          url: '/js/externals/raphael.freetransform/scale.png'
+        },
+        remove: {
+          url: '/js/externals/raphael.freetransform/remove.png'
+        }
+      }
     },
     subject : subject
   };
@@ -183,16 +177,16 @@ Raphael.fn.freeTransform = function (subject, options, callback) {
 
     ft.handles = {
       move  : {
-        element: paper.image(ft.icons.move.url, ft.attrs.center.x, ft.attrs.center.y, ft.icons.move.width, ft.icons.move.height).attr({cursor: 'move'})
+        element: paper.image(ft.opts.icons.move.url, ft.attrs.center.x, ft.attrs.center.y, ft.opts.icons.width, ft.opts.icons.height).attr({cursor: 'move'})
       },
       rotate: {
-        element: paper.image(ft.icons.rotate.url, ft.attrs.center.x, ft.attrs.center.y, ft.icons.rotate.width, ft.icons.rotate.height).attr({cursor: 'move'})
+        element: paper.image(ft.opts.icons.rotate.url, ft.attrs.center.x, ft.attrs.center.y, ft.opts.icons.width, ft.opts.icons.height).attr({cursor: 'move'})
       },
       scale : {
-        element: paper.image(ft.icons.scale.url, ft.attrs.center.x, ft.attrs.center.y, ft.icons.scale.width, ft.icons.scale.height).attr({cursor: 'move'})
+        element: paper.image(ft.opts.icons.scale.url, ft.attrs.center.x, ft.attrs.center.y, ft.opts.icons.width, ft.opts.icons.height).attr({cursor: 'move'})
       },
       remove: {
-        element: paper.image(ft.icons.remove.url, ft.attrs.center.x, ft.attrs.center.y, ft.icons.remove.width, ft.icons.remove.height).attr({cursor: 'pointer'})
+        element: paper.image(ft.opts.icons.remove.url, ft.attrs.center.x, ft.attrs.center.y, ft.opts.icons.width, ft.opts.icons.height).attr({cursor: 'pointer'})
       }
     };
 
@@ -472,7 +466,7 @@ Raphael.fn.freeTransform = function (subject, options, callback) {
     for (i in options) {
       if (options[i] && options[i].constructor === Object) {
         for (j in options[i]) {
-          if (options[i].hasOwnProperty(j)) {
+          if (options[i].hasOwnProperty(j) && ft.opts[i]) {
             ft.opts[i][j] = options[i][j];
           }
         }
